@@ -10,3 +10,10 @@ npm run tsc # Genera build
 ```
 
 ref: https://github.com/microsoft/TypeScript-Node-Starter
+
+## Resumen
+- Uso de typescript
+- Uso de Express
+- Uso mongoDB y mongosee
+- Uso de typegoose para creacion de modelos
+- Uso de passport y jsonwebtoken para securizacion y sesiones
