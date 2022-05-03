@@ -19,3 +19,8 @@ export const conflict = (res: Response, entity: any) => {
   res.status(409).json(entity).end()
   return null
 }
+
+export const unautorized = (res: Response) => {
+  res.status(401).end()
+  return null
+}

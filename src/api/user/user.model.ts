@@ -1,82 +1,94 @@
-import crypto from "crypto";
-import mongoose from "mongoose";
+import mongooseKeywords from 'mongoose-keywords'
 
-export enum UserRoles {
-  user = 'user',
-  admin = 'admin'
-}
+import crypto from "crypto"
+import bcrypt from 'bcrypt'
 
-export type UserDocument = mongoose.Document & {
-  id: string
-  email: string
-  password: string
-  name: string
-  orgUnit: string
-  role: UserRoles
-  picture: string
+import { DocumentType, getModelForClass, modelOptions, plugin, pre, prop } from "@typegoose/typegoose";
 
-  gravatar: (size: number) => string
-  view: () => userEntry
-}
 
-export type login = Pick<UserDocument, 'email' | 'password'>
-export type userEntry = Pick<UserDocument, 'id' | 'email' | 'name' | 'orgUnit' | 'role' | 'picture'>
+export const roles = ['user', 'guest', 'admin']
 
-const userSchema = new mongoose.Schema<UserDocument>({
-  email: {
+@pre<User>('save', function (next) {  
+  if (this.isModified('password')) {
+    bcrypt.hash(this.password, 9).then((hash: string) => {
+      this.password = hash
+      next()
+    }).catch(next)
+  }
+
+  if (!this.picture || this.picture.indexOf('https://gravatar.com') === 0) {
+    const hash = crypto.createHash('md5').update(this.email).digest('hex')
+    this.picture = `https://gravatar.com/avatar/${hash}?d=identicon`
+  }
+})
+
+@plugin(mongooseKeywords, { paths: ['email', 'name'] })
+@modelOptions({
+  schemaOptions: {
+    timestamps: true
+  }
+})
+class User {
+
+  @prop({
     type: String,
     match: /^\S+@\S+\.\S+$/,
     required: true,
     unique: true,
     trim: true,
     lowercase: true
-  },
-  password: {
+  })
+  public email: string
+
+  @prop({
     type: String,
     required: true,
     minlength: 6
-  },
-  name: {
-    type: String,
-    required: true
-  },
-  orgUnit: {
-    type: String,
-    required: true
-  },
-  role: {
-    type: String,
-    required: true
-  },
-  picture: {
-    type: String,
-    required: true
-  }
-}, {
-  timestamps: true
-})
+  })
+  public password: string
 
-/**
- * Helper method for getting user's gravatar.
- */
-userSchema.methods = {
-  gravatar(size: number = 200): string {
-    if (!this.email) {
-      return `https://gravatar.com/avatar/?s=${size}&d=retro`
-    }
-    const md5 = crypto.createHash("md5").update(this.email).digest("hex")
-    return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`
-  },
-  view(): userEntry {
+  @prop({
+    type: String,
+    required: true
+  })
+  public name: string
+
+  @prop({
+    type: String,
+    required: true,
+    enum: roles,
+    default: 'user'
+  })
+  public role: string
+
+  @prop({
+    type: String
+  })
+  public picture: string
+
+
+  constructor({ email, password, name, role, picture }: any) {
+    this.email = email;
+    this.password = password;
+    this.name = name;
+    this.role = role;
+    this.picture = picture;
+  }
+
+  public view(this: DocumentType<User>) {
     return {
       id: this.id,
       email: this.email,
       name: this.name,
-      orgUnit: this.orgUnit,
       role: this.role,
       picture: this.picture
     }
   }
+
+  public authenticate(password: string): Promise<User | boolean> {
+    return bcrypt.compare(password, this.password).then((valid: boolean) => valid ? this : false)
+  }
 }
 
-export const User = mongoose.model<UserDocument>("User", userSchema)
+export const userModel = getModelForClass(User)
+export default userModel

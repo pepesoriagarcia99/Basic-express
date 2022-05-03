@@ -1,13 +1,12 @@
 import path from 'path'
 
-function requireProcessEnv(name: string)  : string | undefined {
+function requireProcessEnv(name: string): string | undefined {
   if (process.env[name]) {
     return process.env[name]
   }
   return undefined
 }
 
-/* istanbul ignore next */
 if (process.env.NODE_ENV !== 'production') {
   const dotenv = require('dotenv-safe')
   dotenv.load({
@@ -21,6 +20,9 @@ const config: any = {
   development: {
     ip: process.env.IP || 'localhost',
     port: process.env.PORT || 9000,
+    sign: {
+      algorithm: 'RS256'
+    },
     mongo: {
       uri: 'mongodb://localhost:27017/BasicExpress_dev',
       options: {
@@ -31,6 +33,10 @@ const config: any = {
   production: {
     ip: process.env.IP || '0.0.0.0',
     port: process.env.PORT || 9000,
+    sign: {
+      expiresIn: '1h',
+      algorithm: 'RS512'
+    },
     mongo: {
       uri: '',
       options: {
@@ -46,5 +52,6 @@ export default {
   env,
   masterKey: requireProcessEnv('MASTER_KEY'),
   jwtSecret: requireProcessEnv('JWT_SECRET'),
+  apiRoot: process.env.API_ROOT || '',
   ...config[env]
 }
