@@ -55,7 +55,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:9000/api/user?access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNzAyZThlYzE1OTlmMGUzMDliODI5NiIsImlhdCI6MTY1MTYwNTg2Mn0.EyeGl7aja53yTM2uF76jrx-Fm4tPn34TE5p_FbIaTo8",
+							"raw": "http://localhost:9000/api/user?access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNzAyZThlYzE1OTlmMGUzMDliODI5NiIsIm5hbWUiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY1MTYxMTc2NSwiZXhwIjoxNjUxNjEzNTY1fQ.irdfrixc8yatV4LCarZ-Mkefp46UrwQ__HoSKKwI5Yc",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -68,7 +68,7 @@
 							"query": [
 								{
 									"key": "access_token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNzAyZThlYzE1OTlmMGUzMDliODI5NiIsImlhdCI6MTY1MTYwNTg2Mn0.EyeGl7aja53yTM2uF76jrx-Fm4tPn34TE5p_FbIaTo8"
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNzAyZThlYzE1OTlmMGUzMDliODI5NiIsIm5hbWUiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY1MTYxMTc2NSwiZXhwIjoxNjUxNjEzNTY1fQ.irdfrixc8yatV4LCarZ-Mkefp46UrwQ__HoSKKwI5Yc"
 								}
 							]
 						}

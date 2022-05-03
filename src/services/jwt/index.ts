@@ -7,8 +7,10 @@ import config from '../../config'
 const jwtSign = Promise.promisify(jwt.sign)
 const jwtVerify = Promise.promisify(jwt.verify)
 
-// @ts-ignore
-export const sign = (id: string, options?: jwt.SignOptions | undefined, method = jwtSign) => method({ id }, config.jwtSecret, options)
+export const sign = ({ id, name, role }: any) => {
+  // @ts-ignore
+  return jwtSign({ id, name, role }, config.jwtSecret, config.sign)
+}
 
 // @ts-ignore
 export const verify = (token: string) => jwtVerify(token, config.jwtSecret)

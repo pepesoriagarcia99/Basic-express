@@ -21,7 +21,7 @@ const config: any = {
     ip: process.env.IP || 'localhost',
     port: process.env.PORT || 9000,
     sign: {
-      algorithm: 'RS256'
+      expiresIn: '30m'
     },
     mongo: {
       uri: 'mongodb://localhost:27017/BasicExpress_dev',
@@ -34,8 +34,7 @@ const config: any = {
     ip: process.env.IP || '0.0.0.0',
     port: process.env.PORT || 9000,
     sign: {
-      expiresIn: '1h',
-      algorithm: 'RS512'
+      expiresIn: '1h'
     },
     mongo: {
       uri: '',

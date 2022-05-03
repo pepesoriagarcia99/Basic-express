@@ -70,7 +70,6 @@ passport.use('password', new BasicStrategy((username: string, password: string, 
       });
 
       return authenticatePromise.then((user: boolean | any) => {
-        console.log({ user });
         done(null, user)
         return null
       }).catch(done)
