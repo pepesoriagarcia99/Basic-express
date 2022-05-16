@@ -1,4 +1,6 @@
 import express from 'express'
+import { createClient } from 'redis'
+
 import cors from 'cors'
 import compression from 'compression'
 import morgan from 'morgan'
@@ -8,10 +10,9 @@ import passport from 'passport'
 import { errorHandler as queryErrorHandler } from 'querymen'
 // @ts-ignore
 import { errorHandler as bodyErrorHandler } from 'bodymen'
-import { Router } from 'express'
 
 
-export default (apiRoot: string, routes: Router) => {
+export default (apiRoot: string, routes: express.Router) => {
   const app = express()
 
   app.use(express.urlencoded({ extended: false }))
@@ -24,9 +25,11 @@ export default (apiRoot: string, routes: Router) => {
   app.use(queryErrorHandler())
   app.use(bodyErrorHandler())
 
+  const redisClient = createClient({ legacyMode: true })
+  redisClient.connect().catch(console.error)
+
   app.use(passport.initialize());
   app.use(passport.session());
-
 
   app.use(apiRoot, routes)
 

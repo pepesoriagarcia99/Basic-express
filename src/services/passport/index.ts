@@ -9,6 +9,7 @@ import config from '../../config'
 import User, { roles as userRoles } from '../../api/user/user.model';
 
 import { unautorized } from '../../services/response'
+import { verify } from '../../services/jwt'
 
 interface IVerifyOptions {
   message?: string | undefined;
@@ -39,9 +40,17 @@ passport.use('master', new BearerStrategy((token: string, done: (error: any, use
   }
 }))
 
-export const token = ({ required, roles = userRoles }: any = {}) => (req: Request, res: Response, next: NextFunction) =>
-  passport.authenticate('token', { session: false }, (err, user, _info) => {
-    if (err || (required && !user) || (required && !~roles.indexOf(user.role))) {
+export const token = ({ required, roles = userRoles }: any = {}) => async (req: Request, res: Response, next: NextFunction) => {
+  let token: string = ""
+  if (req.query.access_token) {
+    token = req.query.access_token.toString()
+  }
+
+  const isVerify = await verify(token);
+
+  return passport.authenticate('token', { session: false }, (err, user, _info) => {
+
+    if (err || (required && !user) || (required && !~roles.indexOf(user.role)) || !isVerify) {
       return unautorized(res)
     }
     req.logIn(user, { session: false }, (err) => {
@@ -49,7 +58,7 @@ export const token = ({ required, roles = userRoles }: any = {}) => (req: Reques
       next()
     })
   })(req, res, next)
-
+}
 
 passport.use('password', new BasicStrategy((username: string, password: string, done: (error: any, user?: any, options?: IVerifyOptions | string) => void) => {
   User.findOne({ $or: [{ email: username }, { name: username }] })
@@ -83,9 +92,10 @@ passport.use('token', new JwtStrategy({
     ExtractJwt.fromBodyField('access_token'),
     ExtractJwt.fromAuthHeaderWithScheme('Bearer')
   ])
-}, ({ id }: any, done: (error: any, user?: any, options?: IVerifyOptions | string) => void) => {
-  User.findById(id).then((user) => {
-    done(null, user)
-    return null
-  }).catch(done)
+}, ({ id }: any, done: (error: any, user?: any, options?: IVerifyOptions) => void) => {
+  User.findById(id)
+    .then((user) => {
+      done(null, user)
+      return null
+    }).catch(done)
 }))

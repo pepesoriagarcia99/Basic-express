@@ -20,8 +20,11 @@ const config: any = {
   development: {
     ip: process.env.IP || 'localhost',
     port: process.env.PORT || 9000,
+    redis: {
+      port: 6379,
+    },
     sign: {
-      expiresIn: '30m'
+      expiresIn: '5m'
     },
     mongo: {
       uri: 'mongodb://localhost:27017/BasicExpress_dev',
@@ -33,8 +36,11 @@ const config: any = {
   production: {
     ip: process.env.IP || '0.0.0.0',
     port: process.env.PORT || 9000,
+    redis: {
+      port: 6379,
+    },
     sign: {
-      expiresIn: '1h'
+      expiresIn: '24h'
     },
     mongo: {
       uri: '',

@@ -55,7 +55,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:9000/api/user?access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNzAyZThlYzE1OTlmMGUzMDliODI5NiIsIm5hbWUiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY1MTYxMTc2NSwiZXhwIjoxNjUxNjEzNTY1fQ.irdfrixc8yatV4LCarZ-Mkefp46UrwQ__HoSKKwI5Yc",
+							"raw": "http://localhost:9000/api/user?access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNzAyZThlYzE1OTlmMGUzMDliODI5NiIsIm5hbWUiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY1MjcxNTA5MCwiZXhwIjoxNjUyNzE1MzkwfQ.ejue3N-0hfX2d1inE0ydink3hU25qZMVVIKuZLLJyX0",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -68,7 +68,7 @@
 							"query": [
 								{
 									"key": "access_token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNzAyZThlYzE1OTlmMGUzMDliODI5NiIsIm5hbWUiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY1MTYxMTc2NSwiZXhwIjoxNjUxNjEzNTY1fQ.irdfrixc8yatV4LCarZ-Mkefp46UrwQ__HoSKKwI5Yc"
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNzAyZThlYzE1OTlmMGUzMDliODI5NiIsIm5hbWUiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY1MjcxNTA5MCwiZXhwIjoxNjUyNzE1MzkwfQ.ejue3N-0hfX2d1inE0ydink3hU25qZMVVIKuZLLJyX0"
 								}
 							]
 						}
@@ -138,7 +138,7 @@
 			"name": "auth",
 			"item": [
 				{
-					"name": "auth",
+					"name": "signin",
 					"request": {
 						"auth": {
 							"type": "basic",
@@ -158,7 +158,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:9000/api/auth?access_token=1SUKKPE3rdCrLCxr9RuUtBNgXmJqpH64",
+							"raw": "http://localhost:9000/api/signin?access_token=1SUKKPE3rdCrLCxr9RuUtBNgXmJqpH64",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -166,12 +166,38 @@
 							"port": "9000",
 							"path": [
 								"api",
-								"auth"
+								"signin"
 							],
 							"query": [
 								{
 									"key": "access_token",
 									"value": "1SUKKPE3rdCrLCxr9RuUtBNgXmJqpH64"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "signout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9000/api/signout?access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNzAyZThlYzE1OTlmMGUzMDliODI5NiIsIm5hbWUiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY1MjcxNTA5MCwiZXhwIjoxNjUyNzE1MzkwfQ.ejue3N-0hfX2d1inE0ydink3hU25qZMVVIKuZLLJyX0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"signout"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNzAyZThlYzE1OTlmMGUzMDliODI5NiIsIm5hbWUiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY1MjcxNTA5MCwiZXhwIjoxNjUyNzE1MzkwfQ.ejue3N-0hfX2d1inE0ydink3hU25qZMVVIKuZLLJyX0"
 								}
 							]
 						}

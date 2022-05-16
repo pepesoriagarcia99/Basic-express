@@ -5,19 +5,7 @@ import { handleValidationError } from '../../services/mongosee/validations'
 
 import User from './user.model'
 
-// querymen: { select, cursor }, query, bodymen: { body }
-export const getUsers = (_req: Request, res: Response, next: NextFunction) => {
-  User.find({})
-    .then((users) => ({
-      count: users.length,
-      rows: users.map((user) => user.view())
-    })
-    )
-    .then(success(res))
-    .catch(next)
-}
-
-export const addUser = ({ body }: Request, res: Response, next: NextFunction) => {  
+export const signup = ({ body }: Request, res: Response, next: NextFunction) => {
   User.create(body)
     .then((user) => user.view())
     .then(success(res, 201))
@@ -30,15 +18,35 @@ export const addUser = ({ body }: Request, res: Response, next: NextFunction) =>
     })
 }
 
-export const userProfile = ({ user }: Request, res: Response, _next: NextFunction) => {  
+// querymen: { select, cursor }, query, bodymen: { body }
+export const getUsers = (_req: Request, res: Response, next: NextFunction) => {
+  User.find({})
+    .then((users) => ({
+      count: users.length,
+      rows: users.map((user) => user.view())
+    })
+    )
+    .then(success(res))
+    .catch(next)
+}
+
+export const getOneUser = ({ params }: Request, res: Response, next: NextFunction) => {
+  User.findById(params.id)
+    .then(notFound(res))
+    .then((user) => user ? user.view() : null)
+    .then(success(res))
+    .catch(next)
+}
+
+export const userProfile = ({ user }: Request, res: Response) => {
   if (user) {
     return res.status(200).json(user.view()).end()
   }
   return res.status(404).end()
 }
 
-export const deleteUser = ({ query }: Request, res: Response, next: NextFunction) => {
-  User.findById(query.id)
+export const deleteUser = ({ params }: Request, res: Response, next: NextFunction) => {
+  User.findById(params.id)
     .then(notFound(res))
     .then((user) => user ? user.remove() : null)
     .then(success(res, 204))

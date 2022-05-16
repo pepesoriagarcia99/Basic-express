@@ -8,7 +8,7 @@ import { DocumentType, getModelForClass, modelOptions, plugin, pre, prop } from 
 
 export const roles = ['user', 'guest', 'admin']
 
-@pre<User>('save', function (next) {  
+@pre<User>('save', function (next) {
   if (this.isModified('password')) {
     bcrypt.hash(this.password, 9).then((hash: string) => {
       this.password = hash
